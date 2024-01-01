@@ -2,8 +2,20 @@ import java.awt.Color;
 
 public class ZPiece extends Piece{
 
+    Color c = new Color(197, 11, 59);
+
     public ZPiece(){
-        super.create(new Color(197, 11, 59));
+        super.create(c);
+    }
+
+    public void solidify(){
+        int indexX;
+        int indexY;
+        for(int i = 0; i < b.length; i++){
+            indexX = ((b[i].x - 490) / Block.SIZE);
+            indexY = ((b[i].y - 50)/ Block.SIZE) - 1;
+            TetrisManager.board[indexY][indexX] = c;
+        }
     }
 
     public void setXY(int x, int y){
@@ -38,8 +50,9 @@ public class ZPiece extends Piece{
 
         //check for collision
 
-        //call update
-        updateXY(true, direction);
+        if(!checkRotationCollision()){
+            updateXY(true, direction);
+        }
     }
 
     @Override
@@ -55,8 +68,9 @@ public class ZPiece extends Piece{
 
         //check for collision
 
-        //call update
-        updateXY(true, direction);
+        if(!checkRotationCollision()){
+            updateXY(true, direction);
+        }
     }
 
     @Override

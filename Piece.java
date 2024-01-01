@@ -49,13 +49,22 @@ public class Piece {
             }
         }
     }
+    
     public void getRotation1(int direction){}
     public void getRotation2(int direction){}
     public void getRotation3(int direction){}
     public void getRotation4(int direction){}
+    public void solidify(){}
     public boolean checkLeftCollision(){
+        int index;
+        int indexX;
         for(int i = 0; i < b.length; i++){
+            index = (b[i].y / Block.SIZE) - 1;
+            indexX = ((b[i].x - 490) / Block.SIZE);
             if(b[i].x == TetrisManager.leftX){
+                return true;
+            }
+            if(TetrisManager.board[index][indexX - 1] != null){
                 return true;
             }
         }
@@ -63,8 +72,15 @@ public class Piece {
     }
 
     public boolean checkRightCollision(){
+        int index;
+        int indexX;
         for(int i = 0; i < b.length; i++){
+            index = (b[i].y / Block.SIZE) - 1;
+            indexX = ((b[i].x - 490) / Block.SIZE);
             if(b[i].x == TetrisManager.rightX - Block.SIZE){
+                return true;
+            }
+            if(TetrisManager.board[index][indexX + 1] != null){
                 return true;
             }
         }
@@ -72,16 +88,39 @@ public class Piece {
     }
 
     public boolean checkDownCollision(){
+        int index;
+        int indexX;
         for(int i = 0; i < b.length; i++){
-            if(b[i].y + Block.SIZE == TetrisManager.bottomY){
+            index = (b[i].y / Block.SIZE) - 1;
+            indexX = ((b[i].x - 490) / Block.SIZE);
+            if(b[i].y  == TetrisManager.bottomY){
+                return true;
+            }
+            for(int j = 0; j < TetrisManager.board[0].length; j++){
+                if(TetrisManager.board[index][indexX] != null){
+                    return true;
+                }
+            }
+        }
+        
+
+        return false;
+    }
+
+    public boolean checkRotationCollision(){
+        int index;
+        int indexX;
+        for(int i = 0; i < b.length; i++){
+            index = (tempB[i].y / Block.SIZE) - 1;
+            indexX = ((tempB[i].x - 490) / Block.SIZE);
+            if(index >= 20 || indexX < 0 || indexX >= 10){
+                return true;
+            }
+            if(TetrisManager.board[index][indexX] != null){
                 return true;
             }
         }
         return false;
-    }
-
-    public void checkRotationCollision(){
-
     }
     public void update(){
 
@@ -152,9 +191,18 @@ public class Piece {
             }
             InputHandler.left = false;
         }
+        if(InputHandler.space){
+            while(!checkDownCollision()){
+                b[0].y += Block.SIZE;
+                b[1].y += Block.SIZE;
+                b[2].y += Block.SIZE;
+                b[3].y += Block.SIZE;
+            }
+            InputHandler.space = false;
+        }
 
         if(checkDownCollision()){
-            
+            solidify();
             TetrisManager.nextPiece();
         }
 

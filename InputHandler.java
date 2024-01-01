@@ -4,7 +4,7 @@ import java.awt.event.KeyListener;
 
 public class InputHandler implements KeyListener{
 
-    public static boolean up, down, right, left, z;
+    public static boolean up, down, right, left, z, space;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -31,6 +31,9 @@ public class InputHandler implements KeyListener{
                 break;
             case KeyEvent.VK_Z:
                 z = true;
+                break;
+            case KeyEvent.VK_SPACE:
+                space = true;
                 break;
         } 
         /*

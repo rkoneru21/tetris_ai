@@ -1,9 +1,21 @@
 import java.awt.Color;
 
 public class SquarePiece extends Piece{
+
+    Color c = new Color(215, 159, 14);
     
     public SquarePiece(){
-        super.create(new Color(215, 159, 14));
+        super.create(c);
+    }
+
+    public void solidify(){
+        int indexX;
+        int indexY;
+        for(int i = 0; i < b.length; i++){
+            indexX = ((b[i].x - 490) / Block.SIZE);
+            indexY = ((b[i].y - 50)/ Block.SIZE) - 1;
+            TetrisManager.board[indexY][indexX] = c;
+        }
     }
 
     public void setXY(int x, int y){
