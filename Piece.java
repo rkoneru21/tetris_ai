@@ -7,8 +7,10 @@ public class Piece {
     public Block[] tempB = new Block[4];
     int num = 0;
     int state;
+    //Color col;
 
     public void create(Color c){
+        //col = c;
         b[0] = new Block(c);
         b[1] = new Block(c);
         b[2] = new Block(c);
@@ -18,6 +20,30 @@ public class Piece {
         tempB[2] = new Block(c);
         tempB[3] = new Block(c);
         this.state = 1;
+    }
+
+    public int getNumRotations(){
+        return 5;
+    }
+
+    public int getRightX(){
+        int big = 0;
+        for(int i = 0; i < b.length; i++){
+            if(b[i].x > big){
+                big = b[i].x;
+            }
+        }
+        return big;
+    }
+
+    public int getLeftX(){
+        int small = 1000000;
+        for(int i = 0; i < b.length; i++){
+            if(b[i].x < small){
+                small = b[i].x;
+            }
+        }
+        return small;
     }
 
     public void setXY(int x, int y){
@@ -217,7 +243,25 @@ public class Piece {
             num = 0;
         }
     }
+    
+    @Override
+    public Piece clone() {
+        try {
+            Piece newPiece = (Piece) super.clone();
+            newPiece.b = new Block[4];
+            newPiece.tempB = new Block[4];
 
+            for (int i = 0; i < 4; i++) {
+                newPiece.b[i] = (Block) this.b[i].clone();
+                newPiece.tempB[i] = (Block) this.tempB[i].clone();
+            }
+
+            return newPiece;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+    
     public void draw(Graphics2D g2){
         g2.setColor(b[0].c);
         g2.fillRect(b[0].x, b[0].y, Block.SIZE, Block.SIZE);

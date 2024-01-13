@@ -2,11 +2,14 @@
 
 //Manages gameplay elements such as drawing the play area and handling gameplay actions
 
+import java.awt.AWTException;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,9 +27,12 @@ public class TetrisManager {
     public static int dropInterval = 60;
     public static Random r;
     public static Color[][] board;
+    public static Color[][] tempBoard;
     public static ArrayList<Piece> nextPieces;
     public Piece next;
     public static int score;
+    int lit = 0;
+    public TetrisAI ai;
     
 
     static Piece currentPiece;
@@ -40,10 +46,13 @@ public class TetrisManager {
         bottomY = topY + HEIGHT;
         r = new Random();
         board = new Color[20][10];
+        tempBoard = new Color[20][10];
         nextPieces = new ArrayList<>();
+        ai = new TetrisAI();
 
         //PIECE_START_X = leftX + (WIDTH/2) - Block.SIZE;
         //PIECE_START_Y = topY + Block.SIZE;
+        
         nextPieces.add(new LPiece());
         nextPieces.add(new LinePiece());
         nextPieces.add(new SquarePiece());
@@ -51,7 +60,7 @@ public class TetrisManager {
         nextPieces.add(new ZPiece());
         nextPieces.add(new TPiece());
         nextPieces.add(new JPiece());
-        Collections.shuffle(nextPieces);
+        //Collections.shuffle(nextPieces);
         nextPiece();
         currentPiece.setXY(PIECE_START_X, PIECE_START_Y);
     }
@@ -71,13 +80,14 @@ public class TetrisManager {
     public void update(){
         //check for full rows
         int count = 0;
-        /* 
-        for(int i = 0; i < board.length; i++){
-            if(isRowEmpty(i)){
-                count++;
+        
+        
+        if(Tetris.isEnabled){
+            ai.nextMove();
+        }
 
-            }
-        }*/
+
+        //clear full rows
         for(int i = board.length - 1; i > 1; i--){
 			if(isRowEmpty(i)){
                 count++;
@@ -85,6 +95,8 @@ public class TetrisManager {
 					for(int k = 0; k < board[0].length; k++){
 						board[j][k] = board[j-1][k];
 						board[j-1][k] = null;
+                        tempBoard[j][k] = tempBoard[j-1][k];
+						tempBoard[j-1][k] = null;
 					}
 				}
                 i++;
@@ -187,5 +199,6 @@ public class TetrisManager {
         g2.drawString("Score:", leftX - 200, topY + 25);
         String sco = String.valueOf(score);
         g2.drawString(sco, leftX - 200, topY + 75);
+
     }
 }

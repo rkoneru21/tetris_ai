@@ -1,8 +1,10 @@
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class TetrisPanel extends JPanel implements Runnable{
@@ -18,7 +20,9 @@ public class TetrisPanel extends JPanel implements Runnable{
 
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.BLACK);
-        setLayout(null);
+        //setLayout(null);
+        
+        
         this.addKeyListener(new InputHandler());
         this.setFocusable(true);
         manager = new TetrisManager();

@@ -11,6 +11,15 @@ public class Block extends Rectangle{
         this.c = c;
     }
 
+    @Override
+    public Object clone() {
+        Block clonedBlock = (Block) super.clone();
+        clonedBlock.c = new Color(this.c.getRGB());
+        clonedBlock.x = this.x;
+        clonedBlock.y = this.y;
+        return clonedBlock;
+    }
+
     public void draw(Graphics2D g2){
         g2.setColor(c);
         g2.fillRect(x, y, SIZE, SIZE);

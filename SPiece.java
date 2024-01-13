@@ -3,7 +3,8 @@ import java.awt.Color;
 public class SPiece extends Piece{
 
     Color c = new Color(106, 177, 0);
-
+    public static int rotations = 2;
+    
     public SPiece(){
         super.create(c);
     }
@@ -15,7 +16,13 @@ public class SPiece extends Piece{
             indexX = ((b[i].x - 490) / Block.SIZE);
             indexY = ((b[i].y - 50)/ Block.SIZE) - 1;
             TetrisManager.board[indexY][indexX] = c;
+            TetrisManager.tempBoard[indexY][indexX] = c;
         }
+    }
+
+    @Override
+    public int getNumRotations(){
+        return 2;
     }
 
     public void setXY(int x, int y){
@@ -89,5 +96,21 @@ public class SPiece extends Piece{
     @Override
     public void getRotation4(int direction){
         getRotation2(direction);
+    }
+
+    @Override
+    public SPiece clone(){
+        SPiece newPiece = new SPiece();
+        newPiece.b = new Block[4];
+        newPiece.tempB = new Block[4];
+
+        for (int i = 0; i < 4; i++) {
+            newPiece.b[i] = (Block) this.b[i].clone();
+            newPiece.tempB[i] = (Block) this.tempB[i].clone();
+        }
+
+
+        return newPiece;
+        
     }
 }
