@@ -28,18 +28,9 @@ public class TetrisAI {
     public void nextMove(){
         long startTime = System.nanoTime();
         copyBoard();
-        /*
-        for(int i= 0; i < newTempBoard.length; i++){
-            for(int j = 0; j < newTempBoard[0].length; j++){
-                if(newTempBoard[i][j] == null){
-                    System.out.print("- ");
-                } else{
-                    System.out.print("o ");
-                }
-            }
-            System.out.println();
-        }
-        */
+        
+        
+        
         if(this.nextMoves.size() == 0){
             this.addNextMoves();
         }
@@ -51,14 +42,14 @@ public class TetrisAI {
         //System.out.println("iytyu");
         r.keyPress(nextMoves.get(0));
         try {
-            Thread.sleep(10);
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         r.keyRelease(nextMoves.remove(0)); 
         long endTime = System.nanoTime();
         long duration = (endTime - startTime)/1000000;
-        System.out.println(duration);
+        //System.out.println(duration);
 
     }
 
@@ -212,7 +203,7 @@ public class TetrisAI {
                     for(int h = 0; h < i - 1; h++){
                         moves.add(38);
                     }
-                    for(int g = 0; g < k; g++){
+                    for(int g = 0; g < k + 1; g++){
                         moves.add(39);
                     }
                     moves.add(32);
@@ -223,7 +214,7 @@ public class TetrisAI {
                     curr.b[1].y -= Block.SIZE;
                     curr.b[2].y -= Block.SIZE;
                     curr.b[3].y -= Block.SIZE;
-                }
+                 }
                 down = 0;
             }
             for(int v = 0; v < rightRemaining; v++){
@@ -233,8 +224,9 @@ public class TetrisAI {
                 curr.b[3].x -= (Block.SIZE);
             }
 
-            nextMoves.addAll(moves);
+            
         }
+        nextMoves.addAll(moves);
 
     }
 
@@ -256,47 +248,64 @@ public class TetrisAI {
         int linesCleared = 0; //done
         int[] colHeights = new int[10];
 
-        
+        for(int i = newTempBoard.length - 1; i > 1; i--){
+			if(this.isRowEmpty(i)){
+                linesCleared++;
+				for(int j = i; j > 1; j--){
+					for(int k = 0; k < newTempBoard[0].length; k++){
+						newTempBoard[j][k] = newTempBoard[j-1][k];
+						newTempBoard[j-1][k] = null;
+					 }
+				}
+                i++;
+		 	}
+		}
+
+         
         boolean first;
-        for(int i = 0; i < newTempBoard[0].length; i++){
-            int holesInCol = 0;
+        for(int i = 0; i < newTempBoard[0].length; i++) {
+            //int holesInCol = 0;
             first = true;
-            for(int j = 0; j < newTempBoard.length; j++){
+             for(int j = 0; j < newTempBoard.length; j++){
                 
-                if(newTempBoard[j][i] != null && first){
+                 if(newTempBoard[j][i] != null && first){
                     colHeights[i] = 20-j;
-                    if((20-j) > maxHeight){
+                     if((20-j) > maxHeight){
                         maxHeight = 20-j;
-                    }
+                     }
                     first = false;
-                }
+                 }
 
-                if(!first && newTempBoard[j][i] == null){
+                if(!first &&  newTempBoard[j][i] == null){
                     holes++;
-                    holesInCol++;
-                    int blocks = (colHeights[i] - (20-j) - (holesInCol - 1));
-                    //blocksAboveHoles += blocks;
+                    //holesInCo l++;
+                    //int blocks = (colHeights[i] - (20-j) - (holesInCol - 1));
+                    //blocksAboveHoles += blocks; 
                 }
 
-                if(i == 9 && newTempBoard[j][i] != null){
+                 if(i == 9 && newTempBoard[j][i] != null){
                     rightBlocks++;
-                }
+                 }
             }
-        }
+         }
 
-        for(int i = 0; i < colHeights.length - 2; i++){
+        for(int i = 0; i < colHeights.length - 1; i++){
             bumpy += Math.abs(colHeights[i] - colHeights[i + 1]);
-            if(i == 0){
+             if(i == 0){
                 if(colHeights[i] - colHeights[i + 1] <= -3){
-                    pillars++;
+                     pillars += 2;
                 }
-            } else {
+             } else if(i == 9){
+                if(colHeights[i - 1] - colHeights[i] >= 3){
+                     pillars += 2;
+                }
+            }else {
                 if(colHeights[i-1] - colHeights[i] >= 3 && colHeights[i+1] - colHeights[i] >= 3){
                     pillars++;
                 }
             }
         }
-        
+        /*
         System.out.println("holes: " + holes);
         System.out.println("max Height: " + maxHeight);
         System.out.println("Pillars: " + pillars);
@@ -304,7 +313,7 @@ public class TetrisAI {
         System.out.println("right blocks: " + rightBlocks);
         //System.out.println("Blocks above holes: " + blocksAboveHoles);
         System.out.println("lines cleared: " + linesCleared);
-        
+        */
 
         //(10 * holes) 
         //(4 * maxHeight)
@@ -313,8 +322,12 @@ public class TetrisAI {
         //(8 * rightBlocks)
         //(8 * blocksAboveHoles)
         //(8/(4-linesCleared))
+        int number = 0;
+        if(linesCleared == 4){
+            number = 50;
+        }
 
-        return (20 * holes) + (20 * maxHeight) + (3 * bumpy) + (8 * rightBlocks) + (8 * pillars)  + (8/(4-linesCleared));
+        return (50 * holes) + (10 * maxHeight) + (3 * bumpy) /* + (8 * rightBlocks) */ + (12 * pillars) - number;
         //return (4 * holes);
 
         //return 1;
