@@ -22,6 +22,11 @@ There are no dependencies necessary for this repository, all you need to do is c
 - Z: Rotate Counter-Clockwise
 - Space: Hard Drop(Instant Drop)
 
+## Future Improvements
+- The current AI does not look at the next piece at all, which significantly hinders its performance. By taking next piece into account, the AI could perform significantly better.
+- The AI does not go for Tetris'(4-line clears) even though they rewards the player with the highest score
+- The multipliers for the AI board criteria(Number of holes, Max height, etc.) are numbers that result from an estimated guess, but are far from perfect. By using a genetic algorithm and picking the set of multipliers that results in the highest score and longest time survived for each generation, the performance of the AI will be increased dramatically.
+
 ## Authors
 Rohith Koneru
 rkoneru21@gmail.com
