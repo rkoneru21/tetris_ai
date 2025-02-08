@@ -1,7 +1,7 @@
 # Tetris AI
 A minimalistic java implementation of Tetris that comes with a toggleable Tetris Bot to play the game for you.
 
-https://github.com/user-attachments/assets/a3bf4361-dcc3-4dc8-848e-c1b2e4ec2e5d
+![Untitled video - Made with Clipchamp (1)](https://github.com/user-attachments/assets/f34c212f-07da-415b-af6b-5551199dff35)
 
 ## Description
 This Tetris implementation is object-oriented with the tetris pieces as objects and the Tetris Manager object as the container where the Tetris pieces fall. The Piece class has 7 classes that extend it, representing the 7 different Tetris pieces in the game. Each seperate piece class has its own rotation methods. When a row on the board is full, the line clears and everything moves down. The scoring is as follows:
