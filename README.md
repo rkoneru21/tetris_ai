@@ -1,5 +1,5 @@
 # Tetris AI
-A minimalistic java implementation of Tetris that comes with a toggleable Tetris Bot to play the game for you.
+A minimalistic java implementation of Tetris with an AI to play the game for you.
 
 ![Untitled video - Made with Clipchamp (1)](https://github.com/user-attachments/assets/f34c212f-07da-415b-af6b-5551199dff35)
 
